@@ -1,6 +1,6 @@
 class CimaWebConfigurator:
     """
-    This class can configure the terms about the website where the searcher is implemented.\n
+    This class can configure the terms about the website where the searcher is implemented.
     If the website changes its structure, the fields of this class must change.
     """
 

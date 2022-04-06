@@ -1,10 +1,20 @@
 from time import sleep
+
 import selenium.webdriver as webdriver
 from selenium.webdriver.common.by import By
+
 from src.cima import searcher
 
 
 class Crawler:
+    """
+    This class represent the crawler of terms
+    for a medicament through the cima web.
+
+    It needs to be passed a string with the
+    search string as parameter.
+    """
+
     def __init__(self, terms):
         self._browser = self._get_results_page(terms)
         self.xpath_amount_registers = '//*[@id="numResultados"]'
@@ -24,9 +34,19 @@ class Crawler:
 
     @staticmethod
     def _get_results_page(search_terms):
+        """
+        Uses the web navigator parameters established on web_config
+        and returns an object type:
+        class selenium.webdriver.edge.webdriver.WebDriver.
 
+        This contains results page from the search made with cima,
+        the medicine searcher from the Spanish Medicament Agency and
+        Sanitary Products (Agencia Española del Medicamento y Productos
+        Sanitarios AEMPS).
+        """
         web_config = searcher.CimaWebConfigurator()
 
+        # Get the parameters of the web configuration
         url = web_config.get_url()
         by_term = web_config.get_search_by()
         tag_search_box = web_config.get_tag_search_box()
@@ -34,7 +54,9 @@ class Crawler:
         t = web_config.get_sleep_time_charge()
 
         browser = webdriver.Edge()
-        browser.set_window_size(1920, 1080)
+        browser.set_window_size(
+            1920, 1080
+        )  # Windows size must be fixed because of the responsive webpage design.
         browser.get(url)
         search_box = browser.find_element(by=by_term, value=tag_search_box)
         search_box.send_keys(search_terms)
@@ -49,19 +71,41 @@ class Crawler:
         return browser
 
     def get_amount_results(self):
+        """
+        This method gets the value of results from the top
+        left indicator on the response webpage.
+
+        That is faster than counting all the elements when
+        getting the length from the list of reference numbers.
+        """
         return int(
             self._browser.find_element(By.XPATH, self.xpath_amount_registers).text
         )
 
     def get_list_references(self):
+        """
+        A list of strings with the code of each medicament
+        is returned.
 
+        The method consults the reference numbers of each
+        medicament, which are results from the search and
+        collects them in a list of strings.
+        """
         amount_results = self.get_amount_results()
 
         def get_registers():
+            """
+            Function got involved in the method get_list_reference.
+            This function consults all the register numbers using
+            the Xpath.
+
+            This function cannot be called from outside
+            """
             return self._browser.find_elements(By.XPATH, self.xpath_register)
 
         registers = get_registers()
 
+        # Scroll is done until there are as reference numbers as the amount of results
         while len(registers) < amount_results:
             self._browser.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);"
