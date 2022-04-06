@@ -72,6 +72,13 @@ class Crawler:
         for reg in registers:
             registers_list.append(reg.text.split(": ")[1])
 
-        self._browser.close()
+
 
         return registers_list
+
+    def __del__(self):
+        """
+        When the object is deleted, the destructor closes the web navigator.
+        """
+        self._browser.close()
+
