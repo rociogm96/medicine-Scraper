@@ -49,7 +49,9 @@ class Crawler:
         return browser
 
     def get_amount_results(self):
-        return int(self._browser.find_element(By.XPATH, self.xpath_amount_registers).text)
+        return int(
+            self._browser.find_element(By.XPATH, self.xpath_amount_registers).text
+        )
 
     def get_list_references(self):
 
@@ -72,8 +74,6 @@ class Crawler:
         for reg in registers:
             registers_list.append(reg.text.split(": ")[1])
 
-
-
         return registers_list
 
     def __del__(self):
@@ -81,4 +81,3 @@ class Crawler:
         When the object is deleted, the destructor closes the web navigator.
         """
         self._browser.close()
-
