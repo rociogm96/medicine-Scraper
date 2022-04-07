@@ -1,5 +1,5 @@
-from src.cima.crawler import Crawler
 import src.cima.medicament as medicament
+from src.cima.crawler import Crawler
 
 # Ejemplos crawler y searcher
 scraping = Crawler("Codeina")
@@ -13,10 +13,14 @@ print(numero)
 print(lista)
 print(len(lista))
 
-#Ejemplo módulo medicament
-medicamentoA = medicament.Medicament('84781')
+# Ejemplo módulo medicament
+medicamentoA = medicament.Medicament("84781")
 print(medicamentoA.name)
 print(medicamentoA.characteristics)
 print(medicamentoA.atc_codes)
-print(medicamentoA.company)
 
+medicamentoA = medicament.Medicament("84781")
+info_medicamento = medicamentoA.get_all_info
+
+for k, v in info_medicamento.items():
+    print(k, "\n\t", v)

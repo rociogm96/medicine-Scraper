@@ -1,8 +1,9 @@
-from time import sleep
-import selenium.webdriver as webdriver
-from bs4 import BeautifulSoup
 import datetime
 import re
+from time import sleep
+
+import selenium.webdriver as webdriver
+from bs4 import BeautifulSoup
 
 
 class WebMedicament:
@@ -28,12 +29,14 @@ class WebMedicament:
         """
 
         browser = webdriver.Edge()
-        browser.set_window_size(1920, 1080)  # Windows size must be fixed because of the responsive webpage design.
+        browser.set_window_size(
+            1920, 1080
+        )  # Windows size must be fixed because of the responsive webpage design.
         browser.get(self.product_url)
         sleep(3)
         page = browser.page_source
         browser.close()
-        return BeautifulSoup(page, 'html.parser')
+        return BeautifulSoup(page, "html.parser")
 
 
 class Medicament:
@@ -56,8 +59,7 @@ class Medicament:
         self.excipients = self.set_excipients()
         self.characteristics = self.set_characteristics()
         self.atc_codes = self.set_atc_codes()
-        # self.images_url
-        # self.medicament_info
+        self.images_url = self.set_image_url()
 
     def set_name(self):
         """
@@ -66,6 +68,7 @@ class Medicament:
         """
         id_value = "nombreMedicamento"
         return self.soup_medicament.find(id=id_value).text
+
     def set_company(self):
         """
         Set the value of the company attribute
@@ -83,7 +86,7 @@ class Medicament:
         """
         id_value = "estadoXS"
         string = self.soup_medicament.find(id=id_value).findChild().text
-        return datetime.datetime.strptime(string, '( %d/%m/%Y )').date()
+        return datetime.datetime.strptime(string, "( %d/%m/%Y )").date()
 
     def set_commercialized(self):
         """
@@ -133,7 +136,7 @@ class Medicament:
         string = self.soup_medicament.find(id=id_value)
         list_strengthens = []
         for i in string.findChild():
-            list_strengthens.append(re.findall(r'\d+(?:\.\d+)?', i.text))
+            list_strengthens.append(re.findall(r"\d+(?:\.\d+)?", i.text))
 
         # Flats the possible multilevel list and convert the values from str to float
         return [float(item) for sublist in list_strengthens for item in sublist]
@@ -181,3 +184,39 @@ class Medicament:
         string = self.soup_medicament.find(id=id_value)
 
         return [i.text for i in string.findChild()]
+
+    def set_image_url(self):
+        """
+        Set the list with the values of the urls that
+        lead to the medicament's images if they exist
+        """
+        id_value = "boxImages"
+        string = self.soup_medicament.find(id=id_value)
+
+        urls = []
+
+        for img in string.find_all("img"):
+            urls.append(img["src"])
+
+        return urls
+
+    @property
+    def get_all_info(self):
+        """This method returns all the information for
+        a medicament in a dictionary.
+        """
+        return {
+            "registration_number": self.registration_number,
+            "name": self.name,
+            "comapny": self.company,
+            "authorization_date": self.authorization_date,
+            "commercialized": self.commercialized,
+            "pharmaceutical_dose_form": self.pharmaceutical_dose_form,
+            "routes_administration": self.routes_administration,
+            "strength": self.strength,
+            "active_ingredients": self.active_ingredients,
+            "excipients": self.excipients,
+            "characteristics": self.characteristics,
+            "atc_codes": self.atc_codes,
+            "images_url": self.images_url,
+        }
