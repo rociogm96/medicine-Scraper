@@ -1,6 +1,7 @@
 from time import sleep
 
-import selenium.webdriver as webdriver
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
 from src.cima import searcher
@@ -53,7 +54,7 @@ class Crawler:
         tag_search_button = web_config.get_tag_search_button()
         t = web_config.get_sleep_time_charge()
 
-        browser = webdriver.Edge()
+        browser = webdriver.Chrome(ChromeDriverManager().install())
         browser.set_window_size(
             1920, 1080
         )  # Windows size must be fixed because of the responsive webpage design.

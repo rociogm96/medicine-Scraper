@@ -2,7 +2,8 @@ import datetime
 import re
 from time import sleep
 
-import selenium.webdriver as webdriver
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
 
@@ -28,7 +29,7 @@ class WebMedicament:
         The parameters for the search are configured in this method.
         """
 
-        browser = webdriver.Edge()
+        browser = webdriver.Chrome(ChromeDriverManager().install())
         browser.set_window_size(
             1920, 1080
         )  # Windows size must be fixed because of the responsive webpage design.
@@ -208,7 +209,7 @@ class Medicament:
         return {
             "registration_number": self.registration_number,
             "name": self.name,
-            "comapny": self.company,
+            "company": self.company,
             "authorization_date": self.authorization_date,
             "commercialized": self.commercialized,
             "pharmaceutical_dose_form": self.pharmaceutical_dose_form,
