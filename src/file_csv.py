@@ -17,10 +17,9 @@ def make_csv(med):
         lista_med.append(info_medicamento)
 
     result = pd.DataFrame.from_dict(lista_med)
-    route = f"../results/{med}.csv"
+    route = f"./results/{med}.csv"
 
     result.to_csv(route, index=False)
-
 
 
 

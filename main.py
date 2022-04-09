@@ -1,6 +1,6 @@
 from src.file_csv import make_csv
 
-search = "CINARIZINA"
+search = "CODEINA"
 
 
 def main():
