@@ -5,12 +5,16 @@ class CimaWebConfigurator:
     """
 
     def __init__(self):
-        # Default values date 06/04/2022
+        # Default values date 11/04/2022
         self.url = "https://cima.aemps.es/cima/publico/home.html"
         self.tag_search_box = "inputbuscadorsimple"
         self.tag_search_button = "btnBuscarSimple"
         self.sleep_time_charge = 10
         self.search_by = "id"
+        self.header = (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+        )
 
     def get_url(self):
         return self.url
@@ -41,3 +45,9 @@ class CimaWebConfigurator:
 
     def set_search_by(self, search_by):
         self.search_by = search_by
+
+    def get_header(self):
+        return self.header
+
+    def set_header(self, header):
+        self.url = header

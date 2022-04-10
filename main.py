@@ -1,12 +1,11 @@
 from src.file_csv import make_csv
 
-search = "CODEINA"
+search = "Cinarizina"
 
 
 def main():
-
     make_csv(search)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -1,11 +1,14 @@
 import datetime
 import re
+
+import selenium.common.exceptions as selenium_exception
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
 
 
 class WebMedicament:
@@ -29,19 +32,33 @@ class WebMedicament:
 
         The parameters for the search are configured in this method.
         """
+        header = (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36"
+        )
+        opt_headers = Options()
+        opt_headers.add_argument(f"user-agent={header}")
+        browser = webdriver.Chrome(
+            ChromeDriverManager().install(), options=opt_headers
+        )
 
-        browser = webdriver.Chrome(ChromeDriverManager().install())
         browser.set_window_size(
             1920, 1080
         )  # Windows size must be fixed because of the responsive webpage design.
         browser.get(self.product_url)
 
         # Wait till tag with id "nregistroID" appears.
-        WebDriverWait(browser, 30).until(ec.presence_of_element_located((By.ID, "nregistroId")))
+        try:
+            WebDriverWait(browser, 30).until(
+                ec.presence_of_element_located((By.ID, "nregistroId"))
+            )
+            page = browser.page_source
+            browser.close()
+            return BeautifulSoup(page, "html.parser")
 
-        page = browser.page_source
-        browser.close()
-        return BeautifulSoup(page, "html.parser")
+        except selenium_exception.WebDriverException as e:
+            print(e.msg)
+            return None
 
 
 class Medicament:

@@ -1,8 +1,9 @@
 from time import sleep
 
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
 
 from src.cima import searcher
 
@@ -53,11 +54,17 @@ class Crawler:
         tag_search_box = web_config.get_tag_search_box()
         tag_search_button = web_config.get_tag_search_button()
         t = web_config.get_sleep_time_charge()
+        header = web_config.get_header()
 
-        browser = webdriver.Chrome(ChromeDriverManager().install())
+        # Establishes an allowed header for the browser.
+        opt_headers = Options()
+        opt_headers.add_argument(f"user-agent={header}")
+        browser = webdriver.Chrome(ChromeDriverManager().install(), options=opt_headers)
+
         browser.set_window_size(
             1920, 1080
         )  # Windows size must be fixed because of the responsive webpage design.
+
         browser.get(url)
         search_box = browser.find_element(by=by_term, value=tag_search_box)
         search_box.send_keys(search_terms)
@@ -69,6 +76,8 @@ class Crawler:
         sleep(t)
 
         # Created a webdriver Attribute
+        if not browser.current_url == "https://cima.aemps.es/cima/publico/lista.html":
+            print("El término {} no ha tenido resultados. Pruebe con otro.".format(search_terms))
         return browser
 
     def get_amount_results(self):
