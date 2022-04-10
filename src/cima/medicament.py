@@ -1,8 +1,9 @@
 import datetime
 import re
-from time import sleep
-
+from selenium.webdriver.support import expected_conditions as ec
+from selenium.webdriver.support.wait import WebDriverWait
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
@@ -34,7 +35,10 @@ class WebMedicament:
             1920, 1080
         )  # Windows size must be fixed because of the responsive webpage design.
         browser.get(self.product_url)
-        sleep(3)
+
+        # Wait till tag with id "nregistroID" appears.
+        WebDriverWait(browser, 30).until(ec.presence_of_element_located((By.ID, "nregistroId")))
+
         page = browser.page_source
         browser.close()
         return BeautifulSoup(page, "html.parser")

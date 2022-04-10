@@ -5,6 +5,8 @@ import pandas as pd
 
 def make_csv(med):
 
+    med = med.upper()
+
     scraping = Crawler(med)
 
     lista = scraping.get_list_references()

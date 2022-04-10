@@ -9,7 +9,7 @@ class CimaWebConfigurator:
         self.url = "https://cima.aemps.es/cima/publico/home.html"
         self.tag_search_box = "inputbuscadorsimple"
         self.tag_search_button = "btnBuscarSimple"
-        self.sleep_time_charge = 5
+        self.sleep_time_charge = 10
         self.search_by = "id"
 
     def get_url(self):

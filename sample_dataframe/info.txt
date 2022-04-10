@@ -1,0 +1,1 @@
+This csv has been generated using the current project with the variable search = "CODEINA" in the main file.
