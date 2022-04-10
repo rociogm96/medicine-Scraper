@@ -19,3 +19,7 @@ Este proyecto ha sido realizado por **Juan Luis González Rodríguez** y **Rocí
 * **./main.py**: fichero principal del programa. En este punto se debe definir el medicamento a buscar y se obtendrá el CSV buscado.
 * **test/testing.py**: fichero de pruebas y ejemplos de las clases y funciones anteriores.
 * **results/**: directorio para guardar los CSV del programa.
+
+### Nota
+
+Los datos obtenidos mediante el presente proyecto tienen una fecha de actualización de abril de 2022. Sin embargo, hay que tener en cuenta que la fecha de actualización de datos de los próximos conjuntos de datos obtenidos, dependerán del usuario y la fecha de extracción de datos.
